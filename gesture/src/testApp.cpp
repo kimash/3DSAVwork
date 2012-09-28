@@ -1,3 +1,8 @@
+//Kim Ash
+//3DSAV - Fall 2012
+//gesture/testApp.cpp - plays applause sound when user bows
+//sound source: http://www.freesound.org/people/J.Zazvurek/sounds/60789/
+
 #include "testApp.h"
 
 ofVec3f testApp::ConvertProjectiveToRealWorld(const XnPoint3D& p) {
@@ -34,6 +39,8 @@ void testApp::update(){
             applause.play();
         }
 	}
+    
+    applause.stop();
 }
 
 void testApp::draw(){
