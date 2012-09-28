@@ -9,6 +9,8 @@ public:
 	void setup();
 	void update();
 	void draw();
+    
+    ofVec3f ConvertProjectiveToRealWorld(const XnPoint3D& p);
 	
 	ofxOpenNIContext openni;
 	ofxDepthGenerator depth;

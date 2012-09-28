@@ -1,5 +1,11 @@
 #include "testApp.h"
 
+ofVec3f testApp::ConvertProjectiveToRealWorld(const XnPoint3D& p) {
+	XnPoint3D world;
+	depth.getXnDepthGenerator().ConvertProjectiveToRealWorld(1, &p, &world);
+	return ofVec3f(world.X, world.Y, world.Z);
+}
+
 void testApp::setup() {
 	ofSetVerticalSync(true);
 	openni.setup();
@@ -16,6 +22,18 @@ void testApp::update(){
 	image.update();
 	depth.update();
 	user.update();
+    
+    if(user.getNumberOfTrackedUsers() > 0) 
+    {
+		ofxTrackedUser* cur = user.getTrackedUser(1); // old API starts users at 1, not 0
+        
+        ofVec3f neckPos = ConvertProjectiveToRealWorld(cur->neck.position[1]);
+        ofVec3f hipPos = ConvertProjectiveToRealWorld(cur->hip.position[1]);
+
+        if (neckPos.y <= hipPos.y) {
+            applause.play();
+        }
+	}
 }
 
 void testApp::draw(){
