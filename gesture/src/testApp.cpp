@@ -35,9 +35,12 @@ void testApp::update(){
         ofVec3f neckPos = ConvertProjectiveToRealWorld(cur->neck.position[1]);
         ofVec3f hipPos = ConvertProjectiveToRealWorld(cur->hip.position[1]);
 
-        if (neckPos.y <= hipPos.y) {
+        if (neckPos.y <= hipPos.y) {    //bow gesture
             applause.play();
         }
+        //alternatively, use distance between neck and hip?
+        //distance = neckPos.distance(hipPos);
+        //use angle between torso and legs - find distance btwn hip/foot
 	}
     
     applause.stop();
