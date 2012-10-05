@@ -41,22 +41,20 @@ void ofApp::keyPressed(int key) {
     }
 }
 
-void ofApp::mouseDragged(int x, int y, int button) {
-
-}
-
+//mesh indices
 int getIndex(int i, int j, int sides)
 {
     return i * sides + (j % sides);
 }
 
-ofMesh ofApp::buildTube(const ofPolyline& path, int sides, float radius)   //add shapeOrder later
+ofMesh ofApp::buildTube(const ofPolyline& path, int sides, float radius)   
 {
     ofMesh mesh;
-    //mesh.setMode(OF_PRIMITIVE_LINE_STRIP);
     mesh.setMode(OF_PRIMITIVE_TRIANGLES);
     
+    //up vector orthogonal to polygonal slice surface
     ofVec3f up(0, 1, 0);
+    
     for (int i = 0; i < path.size(); i++)
     {
         ofVec3f diff, cur, next;
@@ -69,9 +67,12 @@ ofMesh ofApp::buildTube(const ofPolyline& path, int sides, float radius)   //add
             next = path[i+1];
             diff = next - cur;
         }
+        
+        //get perpendicular vectors with cross products
         ofVec3f u = diff.getCrossed(up).normalize() * radius;
         ofVec3f v = u.getCrossed(diff).normalize() * radius;
         
+        //rotate around polyline building mesh
         for (int j = 0; j < sides; j++) {
             float theta = ofMap(j, 0, sides, 0, TWO_PI);
             float x = cos(theta);
@@ -82,6 +83,7 @@ ofMesh ofApp::buildTube(const ofPolyline& path, int sides, float radius)   //add
     
     }
     
+    //closing tube sides - connect side indices to mesh by forming triangles
     for (int i = 0; i+1 < path.size(); i++)
     {
         for (int j = 0; j < sides; j++) {
@@ -94,12 +96,14 @@ ofMesh ofApp::buildTube(const ofPolyline& path, int sides, float radius)   //add
         }
     }
     
+    //closing tube ends
     if (path.size() > 0){
-        int centerStart = mesh.getNumVertices();
+        int centerStart = mesh.getNumVertices(); //center of tube start
         mesh.addVertex(path[0]);
-        int centerEnd = mesh.getNumVertices();
+        int centerEnd = mesh.getNumVertices();  //center of tube end
         mesh.addVertex(path[path.size()-1]);
         
+        //connect side indices to centers of tube ends
         for (int j = 0; j < sides; j++) {
             mesh.addIndex(centerStart);
             mesh.addIndex(getIndex(0, j, sides));
