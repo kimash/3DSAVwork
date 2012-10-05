@@ -11,10 +11,10 @@ public:
 	void keyPressed(int key);
 	void mouseDragged(int x, int y, int button);
     
-    ofMesh buildTube(ofPolyline& path);
+    ofMesh buildTube(const ofPolyline& path, int sides, float radius);
 		
 	int lastX, lastY;
-//	ofMesh mesh;
+	ofMesh mesh;
     ofPolyline line;
     
     ofEasyCam easycam;
