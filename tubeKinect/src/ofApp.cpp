@@ -6,7 +6,7 @@ void ofApp::setup() {
 	image.setup(&openni);
 	depth.setup(&openni);
 	hands.setup(&openni, 4);
-    hands.setMaxNumHands(1);
+    hands.setMaxNumHands(1);    //track only one hand
 	openni.registerViewport();
 	openni.setMirror(true);
 }
@@ -34,7 +34,7 @@ void ofApp::draw()
             ofxTrackedHand* hand = hands.getHand(i);
             ofPoint& handPosition = hand->projectPos;
             line.addVertex(ofVec2f(handPosition.x-ofGetWidth()/2, handPosition.y-ofGetHeight()/2));
-            //ofCircle(handPosition.x, handPosition.y, 10);
+            line.simplify(0.3); //smooths line - removes extraneous pts
         }
     }
     
