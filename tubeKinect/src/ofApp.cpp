@@ -6,7 +6,7 @@ void ofApp::setup() {
 	image.setup(&openni);
 	depth.setup(&openni);
 	hands.setup(&openni, 4);
-    hands.setMaxNumHands(2);
+    hands.setMaxNumHands(1);
 	openni.registerViewport();
 	openni.setMirror(true);
 }
@@ -27,13 +27,6 @@ void ofApp::draw()
 	if(ofGetKeyPressed('c')) {
         line.clear();
 	} 
-//    else if(ofGetKeyPressed(' ')) 
-//    {
-//        if(mouseX != ofGetPreviousMouseX() &&
-//           mouseY != ofGetPreviousMouseY()) {
-//            line.addVertex(ofVec2f(mouseX-ofGetWidth()/2, mouseY-ofGetHeight()/2));
-//        }
-//	}
     
     else {
         int n = hands.getNumTrackedHands();
