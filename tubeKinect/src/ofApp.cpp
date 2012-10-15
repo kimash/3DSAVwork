@@ -6,7 +6,7 @@ void ofApp::setup() {
 	image.setup(&openni);
 	depth.setup(&openni);
 	hands.setup(&openni, 4);
-    hands.setMaxNumHands(1);    //track only one hand
+    hands.setMaxNumHands(2);    //track only one hand
 	openni.registerViewport();
 	openni.setMirror(true);
 }
@@ -15,28 +15,41 @@ void ofApp::update() {
     openni.update();
 	image.update();
 	depth.update();
+    
+    int n = hands.getNumTrackedHands();
+    
+    if(ofGetKeyPressed('c')) {
+        line.clear();
+	}
+    
+    if (n==1) 
+    {
+        ofxTrackedHand* hand = hands.getHand(0);
+        XnPoint3D& raw = hand->rawPos;
+        ofPoint handPosition = ofVec3f(raw.X, raw.Y, raw.Z);
+        
+        if (handPosition != lastHandPos) 
+        {
+            line.addVertex(ofVec3f(handPosition.x-ofGetWidth()/2, handPosition.y-ofGetHeight()/2, handPosition.z));
+            line.simplify(0.3); //smooths line - removes extraneous pts
+            lastHandPos = handPosition;
+        }
+        
+    }
+     
 }
 
 void ofApp::draw() 
 {
-    easycam.begin();    
-    depth.draw(0, 0, 640, 480);
 	ofBackground(0);
 	ofSetColor(255);
-    
-	if(ofGetKeyPressed('c')) {
-        line.clear();
-	} 
-    
-    else {
-        int n = hands.getNumTrackedHands();
-        for(int i = 0; i < n; i++) {
-            ofxTrackedHand* hand = hands.getHand(i);
-            ofPoint& handPosition = hand->projectPos;
-            line.addVertex(ofVec2f(handPosition.x-ofGetWidth()/2, handPosition.y-ofGetHeight()/2));
-            line.simplify(0.3); //smooths line - removes extraneous pts
-        }
+    depth.draw(0, 0, 640, 480);
+    for(int i = 0; i < hands.getNumTrackedHands(); i++) {
+        hands.drawHand(i);
     }
+    easycam.begin(); 
+	    
+    ofTranslate(0, 0, -2000);
     
     line.draw();
     

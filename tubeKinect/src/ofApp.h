@@ -12,13 +12,14 @@ public:
 	void keyPressed(int key);
     
     ofxOpenNIContext openni;
+    ofxUserGenerator user;
 	ofxDepthGenerator depth;
 	ofxImageGenerator image;
 	ofxHandGenerator hands;
     
     ofMesh buildTube(const ofPolyline& path, int sides, float radius);
 		
-	int lastX, lastY;
+	ofPoint lastHandPos;
 	ofMesh mesh;
     ofPolyline line;
     
