@@ -53,7 +53,7 @@ void ofApp::draw()
     
     line.draw();
     
-    mesh = buildTube(line, 6, 40);
+    mesh = buildTube(line, 3, 40);
     ofSetColor(ofColor::red);
     mesh.draw();
     ofSetColor(0);
@@ -98,7 +98,7 @@ ofMesh ofApp::buildTube(const ofPolyline& path, int sides, float radius)
             diff = next - cur;
         }
         
-        if (diff.y > diff.x || diff.y > diff.z) {
+        if (diff.z > diff.x || diff.z > diff.y) {
             radius++;
         }
         else    {
