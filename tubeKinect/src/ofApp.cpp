@@ -98,6 +98,14 @@ ofMesh ofApp::buildTube(const ofPolyline& path, int sides, float radius)
             diff = next - cur;
         }
         
+        if (diff.y > diff.x || diff.y > diff.z) {
+            radius++;
+        }
+        else    {
+            radius--;
+        }
+        
+        
         //get perpendicular vectors with cross products
         ofVec3f u = diff.getCrossed(up).normalize() * radius;
         ofVec3f v = u.getCrossed(diff).normalize() * radius;
